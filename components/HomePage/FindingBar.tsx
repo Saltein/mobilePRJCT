@@ -1,33 +1,60 @@
 import React from 'react';
-import { StyleSheet, View, Image, TextInput } from 'react-native';
+import { StyleSheet, View, Image, TextInput, Pressable } from 'react-native';
 
 export default function FindingBar() {
     return (
-        <View style={styles.container}>
-            <Image 
-                style={styles.image}
-                source={require('../../assets/images/search-line.png')}
-            />
-            <TextInput 
-                style={styles.input} 
-                placeholder="Найти товары"
-            />
+        <View style={styles.mainCon}>
+            <Pressable style={styles.container1}>
+                <Image
+                    style={styles.image}
+                    source={require('../../assets/images/text-align-justify.png')}
+                />
+            </Pressable>
+            <View style={styles.container2}>
+                <Image
+                    style={styles.image}
+                    source={require('../../assets/images/search-line.png')}
+                />
+                <TextInput
+                    style={styles.input}
+                    placeholder="Найти товары"
+                />
+            </View>
         </View>
     );
 }
 
 const styles = StyleSheet.create({
-    container: {
+    mainCon: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        marginBottom: 8,
+    },
+    container1: {
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'center',
-        marginVertical: 16,
+        marginTop: 16,
+        marginLeft: 16,
+        height: "auto",
+
+        borderWidth: 1,
+        borderColor: '#ccc',
+        borderRadius: 12,
+    },
+    container2: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'center',
+        marginTop: 16,
         marginHorizontal: 16,
         height: "auto",
 
         borderWidth: 1,
         borderColor: '#ccc',
         borderRadius: 12,
+        flexGrow: 1, // Позволяет элементу расширяться
+        flexShrink: 1, // Позволяет сжиматься при недостатке места
     },
     image: {
         width: 32,

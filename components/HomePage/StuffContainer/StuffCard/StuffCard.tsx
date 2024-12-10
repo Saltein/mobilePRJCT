@@ -1,23 +1,28 @@
 import React from 'react';
 import { StyleSheet, View, Image, Text, Pressable } from 'react-native';
 
-export default function StuffCard() {
+
+
+type ItemProps = {title: string, imageUrl: string, price: string, weight: string};
+
+export default function StuffCard({title, imageUrl, price, weight}: ItemProps) {
     return (
         <View style={styles.container}>
             <Image
                 style={styles.image}
-                source={{ uri: 'https://dolina-sad.ru/upload/resize_cache/webp/iblock/c7e/c7e99bba4d1e65a04288c8144b551990.webp' }}
+                source={{ uri: imageUrl }}
             />
             <View style={styles.labelContainer}>
                 <Text
                     style={styles.price}
-                >150 ₽</Text>
+                >{price} ₽</Text>
                 <Text
+                    numberOfLines={1}
                     style={styles.label}
-                >Агурец</Text>
+                >{title}</Text>
                 <Text
                     style={styles.weight}
-                >50г</Text>
+                >{weight} г</Text>
             </View>
             <Pressable style={styles.btn}>
                 <Text style={styles.btnLabel}>В корзину</Text>
@@ -29,9 +34,13 @@ export default function StuffCard() {
 const styles = StyleSheet.create({
     container: {
         height: 260,
-        width: "31.9%",
-        backgroundColor: "#f3f3f3",
+        flexGrow: 1, // Позволяет элементу расширяться
+        backgroundColor: "#f5f2f0",
         borderRadius: 12,
+        marginLeft: 16,
+        marginVertical: 8,
+        maxWidth: 130,
+        minWidth: 70
     },
 
     image: {
@@ -50,7 +59,8 @@ const styles = StyleSheet.create({
     label: {
         fontWeight: 500,
         fontSize: 16,
-        color: "#444"
+        color: "#444",
+        
     },
 
     price: {
