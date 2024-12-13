@@ -28,7 +28,6 @@ const styles = StyleSheet.create({
     mainCon: {
         flexDirection: 'row',
         justifyContent: 'space-between',
-        marginBottom: 8,
     },
     container1: {
         flexDirection: 'row',

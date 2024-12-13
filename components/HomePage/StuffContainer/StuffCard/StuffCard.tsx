@@ -1,4 +1,3 @@
-import React from 'react';
 import { StyleSheet, View, Image, Text, Pressable } from 'react-native';
 
 
@@ -33,7 +32,7 @@ export default function StuffCard({title, imageUrl, price, weight}: ItemProps) {
 
 const styles = StyleSheet.create({
     container: {
-        height: 260,
+        height: 230,
         flexGrow: 1, // Позволяет элементу расширяться
         backgroundColor: "#f5f2f0",
         borderRadius: 12,
@@ -58,19 +57,19 @@ const styles = StyleSheet.create({
 
     label: {
         fontWeight: 500,
-        fontSize: 16,
+        fontSize: 11,
         color: "#444",
         
     },
 
     price: {
         fontWeight: 700,
-        fontSize: 20,
+        fontSize: 18,
     },
 
     weight: {
         fontWeight: 300,
-        fontSize: 14,
+        fontSize: 11,
         color: "#666"
     },
 
