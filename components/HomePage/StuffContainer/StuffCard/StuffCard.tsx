@@ -39,7 +39,7 @@ const styles = StyleSheet.create({
         marginLeft: 16,
         marginVertical: 8,
         maxWidth: 130,
-        minWidth: 70
+        minWidth: 70,
     },
 
     image: {

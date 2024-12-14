@@ -1,10 +1,247 @@
-import { View, Text } from 'react-native';
-
+import { StyleSheet, View, Image, Modal, Pressable, TextInput, Text } from 'react-native';
+import DefaultButton from '../ProfilePage/defaultBtn';
+import React, { useState } from "react";
+import * as ImagePicker from 'expo-image-picker';
 
 export default function SettingsPage() {
+    const [modalVisible, setModalVisible] = useState(false);
+    const [profileImage, setProfileImage] = useState('https://i.redd.it/oye-doudou-v0-vzbhnyh9de4d1.jpg?width=1179&format=pjpg&auto=webp&s=ed58b3e30a4e7e322c806b1ff58b5438f4e94813');
+
+    const [addressModalVisible, setAddressModalVisible] = useState(false);
+    const [address, setAddress] = useState("");
+
+    const [aboutModalVisible, setAboutModalVisible] = useState(false);
+    const [about, setAbout] = useState("");
+
+    const selectImage = async () => {
+        // Запрос разрешений
+        const permissionResult = await ImagePicker.requestMediaLibraryPermissionsAsync();
+        if (permissionResult.granted === false) {
+            alert("Доступ к фото и видео отклонен!");
+            return;
+        }
+
+        // Открытие галереи
+        const result = await ImagePicker.launchImageLibraryAsync({
+            mediaTypes: ['images'], // Указываем, что нужны только изображения
+            allowsEditing: true,
+            aspect: [1, 1], // Для квадратных изображений
+            quality: 1,
+        });
+
+        if (!result.canceled) {
+            setProfileImage(result.assets[0].uri); // Установка нового изображения
+        }
+    };
+
     return (
-        <View>
-            <Text>Settings</Text>
+        <View style={styles.container}>
+            <View style={styles.sep}>
+            </View>
+            <DefaultButton
+                title="Картинка профиля"
+                iconUrl={require('../../assets/images/user-box-line.png')}
+                onPressFun={() => { setModalVisible(true) }}
+            />
+            <Modal
+                visible={modalVisible}
+                animationType="fade"
+                transparent={true}
+                onRequestClose={() => setModalVisible(false)}
+            >
+                <View style={styles.modal}>
+                    <View style={styles.modalWindow}>
+                        <Pressable onPress={selectImage}>
+                            <View style={styles.imageContainer}>
+                                <Image
+                                    style={styles.profileImage}
+                                    source={{ uri: profileImage }}
+                                />
+                                <View style={styles.editImageContainer}>
+                                    <Image
+                                        style={styles.editImage}
+                                        source={require('../../assets/images/edit-pen-2-line.png')}
+                                    />
+                                </View>
+                            </View>
+                        </Pressable>
+                        <View style={styles.buttonContainer}>
+                            <DefaultButton
+                                title='Сохранить'
+                                iconUrl={require('../../assets/images/check.png')}
+                                onPressFun={() => setModalVisible(false)}
+                            />
+                            <DefaultButton
+                                title='Отменить'
+                                iconUrl={require('../../assets/images/close-line.png')}
+                                onPressFun={() => setModalVisible(false)}
+                            />
+                        </View>
+                    </View>
+                </View>
+            </Modal>
+
+
+            <DefaultButton
+                title="Адрес доставки"
+                iconUrl={require('../../assets/images/map-marker-line.png')}
+                onPressFun={() => { setAddressModalVisible(true) }}
+            />
+            <Modal
+                visible={addressModalVisible}
+                animationType="fade"
+                transparent={true}
+                onRequestClose={() => setAddressModalVisible(false)}
+            >
+                <View style={styles.modal}>
+                    <View style={styles.modalWindow}>
+                        <TextInput
+                            style={styles.input}
+                            placeholder="Улица, дом, квартира"
+                        />
+                        <TextInput
+                            style={styles.input}
+                            placeholder="Подъезд"
+                        />
+                        <TextInput
+                            style={styles.input}
+                            placeholder="Этаж"
+                        />
+                        <View style={styles.buttonContainer}>
+                            <DefaultButton
+                                title='Сохранить'
+                                iconUrl={require('../../assets/images/check.png')}
+                                onPressFun={() => setAddressModalVisible(false)}
+                            />
+                            <DefaultButton
+                                title='Отменить'
+                                iconUrl={require('../../assets/images/close-line.png')}
+                                onPressFun={() => setAddressModalVisible(false)}
+                            />
+                        </View>
+                    </View>
+                </View>
+            </Modal>
+
+
+            <DefaultButton
+                title="О приложении"
+                iconUrl={require('../../assets/images/settings-cog-line.png')}
+                onPressFun={() => { setAboutModalVisible(true) }}
+            />
+            <Modal
+                visible={aboutModalVisible}
+                animationType="fade"
+                transparent={true}
+                onRequestClose={() => setAboutModalVisible(false)}
+            >
+                <View style={styles.modal}>
+                    <View style={styles.modalWindow}>
+                        <View style={styles.textAboutContainer}>
+                            <Text style={styles.textAbout}>
+                                Проиложенние создано с помощью React-Native в учебных целях для модуля "Мобильная разработка"
+                            </Text>
+                            <Text style={styles.textAbout}>
+                                Frontend: Валов Никита
+                            </Text>
+                            <Text style={styles.textAbout}>
+                                Backend: Строев Данил
+                            </Text>
+                        </View>
+                        <View style={styles.buttonContainer}>
+                            <DefaultButton
+                                title='Понятно'
+                                iconUrl={require('../../assets/images/check.png')}
+                                onPressFun={() => setAboutModalVisible(false)}
+                            />
+                        </View>
+                    </View>
+                </View>
+            </Modal>
+
+            <DefaultButton
+                title="Выход"
+                iconUrl={require('../../assets/images/door-exit-line.png')}
+                onPressFun={() => { }}
+            />
         </View>
-    )
+    );
 }
+
+const styles = StyleSheet.create({
+    container: {
+        height: '100%',
+        backgroundColor: '#f5f2f0',
+        paddingHorizontal: 16,
+    },
+    sep: {
+        height: 16,
+    },
+    modal: {
+        flex: 1,
+        justifyContent: "center",
+        alignItems: "center",
+        backgroundColor: "rgba(0, 0, 0, 0.5)",
+    },
+    modalWindow: {
+        backgroundColor: "#f5f2f0",
+        paddingVertical: 48,
+        paddingHorizontal: 16,
+        borderRadius: 12,
+        elevation: 16,
+        shadowColor: '#000',
+        minWidth: '75%',
+        maxWidth: '100%',
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    profileImage: {
+        width: 128,
+        height: 128,
+        borderRadius: 64,
+        overflow: 'hidden',
+        elevation: 4,
+        marginBottom: 16,
+        marginLeft: 40,
+    },
+    editImage: {
+        width: 32,
+        height: 32,
+    },
+    buttonContainer: {
+        minWidth: 200,
+    },
+    imageContainer: {
+        flexDirection: 'row',
+    },
+    editImageContainer: {
+        width: 40,
+        height: 40,
+        borderRadius: 16,
+        backgroundColor: "#fff",
+        left: -40,
+        justifyContent: 'center',
+        alignItems: 'center',
+        elevation: 4,
+    },
+    input: {
+        borderWidth: 2,
+        borderColor: '#b99',
+        borderRadius: 12,
+        paddingVertical: 8,
+        paddingHorizontal: 16,
+        marginBottom: 8,
+        height: 48,
+        fontWeight: "500",
+        minWidth: 200,
+    },
+    textAboutContainer: {
+        marginHorizontal: 16,
+        marginBottom: 16,
+    },
+    textAbout: {
+        fontSize: 16,
+        fontWeight: 500,
+        textAlign: 'justify',
+    },
+});

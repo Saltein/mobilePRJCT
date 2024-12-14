@@ -54,8 +54,8 @@ function ProfilePageScreen() {
         </View>
       </View>
 
-      <DefaultSeparator />
-
+      <DefaultSeparator/>
+      <View style={styles.sep}></View>
       <DefaultButton
         title="Заказы"
         iconUrl={require('../../assets/images/box-line.png')}
@@ -106,8 +106,8 @@ const styles = StyleSheet.create({
   },
 
   profileImage: {
-    height: 96,
-    width: 96,
+    height: 80,
+    width: 80,
     borderRadius: 48,
     elevation: 2,
     shadowColor: '#171717',
@@ -119,7 +119,7 @@ const styles = StyleSheet.create({
 
   profileName: {
     marginTop: 16,
-    fontSize: 26,
+    fontSize: 22,
     fontWeight: 600,
   },
 
@@ -130,7 +130,11 @@ const styles = StyleSheet.create({
   },
 
   settingsText: {
-    fontSize: 18,
+    fontSize: 14,
     fontWeight: 300,
   },
+
+  sep: {
+    height: 16,
+  }
 });
