@@ -1,4 +1,5 @@
 import { StyleSheet, View, Text, Pressable } from 'react-native';
+import React from 'react';
 
 export default function DefaultSeparator() {
     return (
@@ -12,7 +13,8 @@ const styles = StyleSheet.create({
     separator: {
         borderBottomWidth: 1,
         borderColor: '#dba',
-        marginTop: 16,
+        marginVertical: 16,
         marginHorizontal: 12,
+        top: 0.5,
     }
 })

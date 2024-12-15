@@ -1,14 +1,11 @@
-import { StyleSheet } from 'react-native';
-
-import EditScreenInfo from '@/components/EditScreenInfo';
-import { Text, View } from '@/components/Themed';
+import { StyleSheet, View } from 'react-native';
 import FindingBar from '@/components/HomePage/FindingBar';
 import StuffContainer from '@/components/HomePage/StuffContainer/StuffContainer';
 import DefaultSeparator from '@/components/ProfilePage/defaultSeparator';
 
 export default function TabOneScreen() {
   return (
-    <View>
+    <View style={styles.container}>
       <FindingBar/>
       <DefaultSeparator/>
       <StuffContainer/>
@@ -16,19 +13,10 @@ export default function TabOneScreen() {
   );
 }
 
+
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
+    backgroundColor: '#f5f2f0',
+    height: '100%'
   },
-  title: {
-    fontSize: 20,
-    fontWeight: 'bold',
-  },
-  separator: {
-    marginVertical: 30,
-    height: 1,
-    width: '80%',
-  },
-});
+})

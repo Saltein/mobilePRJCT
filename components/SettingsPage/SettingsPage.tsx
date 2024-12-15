@@ -2,6 +2,7 @@ import { StyleSheet, View, Image, Modal, Pressable, TextInput, Text } from 'reac
 import DefaultButton from '../ProfilePage/defaultBtn';
 import React, { useState } from "react";
 import * as ImagePicker from 'expo-image-picker';
+import DefaultSeparator from '../ProfilePage/defaultSeparator';
 
 export default function SettingsPage() {
     const [modalVisible, setModalVisible] = useState(false);
@@ -12,6 +13,9 @@ export default function SettingsPage() {
 
     const [aboutModalVisible, setAboutModalVisible] = useState(false);
     const [about, setAbout] = useState("");
+
+    const [exitModalVisible, setExitModalVisible] = useState(false);
+    const [exit, setExit] = useState("");
 
     const selectImage = async () => {
         // Запрос разрешений
@@ -159,20 +163,55 @@ export default function SettingsPage() {
                 </View>
             </Modal>
 
+            <DefaultSeparator/>
+            
             <DefaultButton
                 title="Выход"
                 iconUrl={require('../../assets/images/door-exit-line.png')}
-                onPressFun={() => { }}
+                onPressFun={() => { setExitModalVisible(true) }}
             />
+            <Modal
+                visible={exitModalVisible}
+                animationType="fade"
+                transparent={true}
+                onRequestClose={() => setExitModalVisible(false)}
+            >
+                <View style={styles.modal}>
+                    <View style={styles.modalWindow}>
+                        <Text>Вы действительно хотите выйти?</Text>
+                        <View style={styles.yesNoBtnContainer}>
+                            <DefaultButton
+                                title='Да'
+                                iconUrl={require('../../assets/images/check.png')}
+                                onPressFun={() => {
+                                    setExitModalVisible(false)
+                                    
+                                }}
+                            />
+                            <DefaultButton
+                                title='Нет'
+                                iconUrl={require('../../assets/images/close-line.png')}
+                                onPressFun={() => setExitModalVisible(false)}
+                            />
+                        </View>
+                    </View>
+                </View>
+            </Modal>
+
         </View>
     );
 }
 
 const styles = StyleSheet.create({
+    yesNoBtnContainer: {
+        flexDirection: 'row',
+        gap: 16,
+    },
     container: {
         height: '100%',
         backgroundColor: '#f5f2f0',
         paddingHorizontal: 16,
+        gap: 8,
     },
     sep: {
         height: 16,
@@ -210,6 +249,7 @@ const styles = StyleSheet.create({
     },
     buttonContainer: {
         minWidth: 200,
+        gap: 8,
     },
     imageContainer: {
         flexDirection: 'row',

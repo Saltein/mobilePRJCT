@@ -2,7 +2,7 @@ import { StyleSheet, View, Image, Text, Pressable } from 'react-native';
 
 
 
-type ItemProps = {title: string, imageUrl: string, price: string, weight: string};
+type ItemProps = {title: string, imageUrl: string, price: string, weight?: string | number;};
 
 export default function StuffCard({title, imageUrl, price, weight}: ItemProps) {
     return (
@@ -12,16 +12,11 @@ export default function StuffCard({title, imageUrl, price, weight}: ItemProps) {
                 source={{ uri: imageUrl }}
             />
             <View style={styles.labelContainer}>
-                <Text
-                    style={styles.price}
-                >{price} ₽</Text>
-                <Text
-                    numberOfLines={1}
-                    style={styles.label}
-                >{title}</Text>
-                <Text
-                    style={styles.weight}
-                >{weight} г</Text>
+                <Text style={styles.price}>{price} ₽</Text>
+                <Text numberOfLines={1} style={styles.label}>{title}</Text>
+                <Text style={styles.weight}>
+                    {weight === 'null' ? ' ' : `${String(weight)} г`}
+                </Text>
             </View>
             <Pressable style={styles.btn}>
                 <Text style={styles.btnLabel}>В корзину</Text>
@@ -34,12 +29,13 @@ const styles = StyleSheet.create({
     container: {
         height: 230,
         flexGrow: 1, // Позволяет элементу расширяться
-        backgroundColor: "#f5f2f0",
+        backgroundColor: "#fff",
         borderRadius: 12,
         marginLeft: 16,
         marginVertical: 8,
         maxWidth: 130,
         minWidth: 70,
+        elevation: 4,
     },
 
     image: {
@@ -75,7 +71,7 @@ const styles = StyleSheet.create({
 
     btn: {
         borderRadius: 8,
-        backgroundColor: "#fff",
+        backgroundColor: "#badbad",
         height: 32,
         margin: 4,
         display: "flex",

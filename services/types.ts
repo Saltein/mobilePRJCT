@@ -6,4 +6,5 @@ export interface Product {
     image_url?: string;
     stock: number;
     description?: string;
+    product_weight?: number;
  }

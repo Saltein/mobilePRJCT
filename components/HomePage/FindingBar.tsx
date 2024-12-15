@@ -40,6 +40,8 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         borderColor: '#ccc',
         borderRadius: 12,
+
+        backgroundColor: '#fff',
     },
     container2: {
         flexDirection: 'row',
@@ -54,6 +56,8 @@ const styles = StyleSheet.create({
         borderRadius: 12,
         flexGrow: 1, // Позволяет элементу расширяться
         flexShrink: 1, // Позволяет сжиматься при недостатке места
+
+        backgroundColor: '#fff',
     },
     image: {
         width: 32,

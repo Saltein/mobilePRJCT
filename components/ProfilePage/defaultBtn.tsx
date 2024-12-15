@@ -26,7 +26,6 @@ export default function DefaultButton({ title, iconUrl, onPressFun }: ItemProps)
 
 const styles = StyleSheet.create({
     btn: {
-        marginBottom: 8,
         paddingHorizontal: 8,
         height: 48,
         backgroundColor: '#fff',

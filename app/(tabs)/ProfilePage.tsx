@@ -55,7 +55,6 @@ function ProfilePageScreen() {
       </View>
 
       <DefaultSeparator/>
-      <View style={styles.sep}></View>
       <DefaultButton
         title="Заказы"
         iconUrl={require('../../assets/images/box-line.png')}
@@ -133,8 +132,4 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontWeight: 300,
   },
-
-  sep: {
-    height: 16,
-  }
 });
