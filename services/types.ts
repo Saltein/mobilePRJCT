@@ -25,3 +25,15 @@ export interface OrderByUser {
     OrderItems: OrderItem[];
     orderData: OrderByUser[];
 }
+
+
+export interface User {
+    id: number;
+    name: string;
+    email: string;
+    password: string;
+    phone: string;
+    address: string;
+    created_at: string;
+    message: string;
+}

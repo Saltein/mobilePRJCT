@@ -34,10 +34,11 @@ const styles = StyleSheet.create({
         borderRadius: 12,
         elevation: 2,
         shadowColor: '#171717',
+        width: '100%',
     },
 
     btnText: {
-        paddingLeft: 8,
+        paddingHorizontal: 8,
         fontSize: 18,
         fontWeight: 600,
     },

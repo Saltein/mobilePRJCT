@@ -1,22 +1,23 @@
 import DefaultButton from '@/components/ProfilePage/defaultBtn';
 import { getProducts } from '@/services/products';
-import { OrderByUser, Product } from '@/services/types';
+import { OrderByUser, Product, User } from '@/services/types';
 import { StyleSheet, View, Text, ScrollView } from 'react-native';
 import React, { useState } from 'react';
 import { getOrdersByUserId } from '@/services/orders_by_user_id';
+import { getUserByEmail } from '@/services/get_user_by_email';
 
 export default function TestRequests() {
-    const [orders, setOrders] = useState<OrderByUser[] | null>([]); // Для хранения результата запроса
+    const [orders, setOrders] = useState<User | null>(); // Для хранения результата запроса
     const [error, setError] = useState<string | null>(null); // Для обработки ошибок
 
     const fetchOrders = async () => {
         try {
-            const data = await getOrdersByUserId('1'); // Ожидаем выполнения функции
-            setOrders([data]); // Оборачиваем объект в массив
+            const data = await getUserByEmail('nikitbro5@gmail.com'); // Ожидаем выполнения функции
+            setOrders(data); // Оборачиваем объект в массив
             setError(null); // Сбрасываем ошибку
         } catch (err) {
             setError((err as Error).message); // Устанавливаем сообщение об ошибке
-            setOrders([]); // Сбрасываем данные
+            setOrders(null); // Сбрасываем данные
         }
     };
     
