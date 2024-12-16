@@ -1,23 +1,25 @@
 import DefaultButton from '@/components/ProfilePage/defaultBtn';
 import { getProducts } from '@/services/products';
-import { Product } from '@/services/types';
+import { OrderByUser, Product } from '@/services/types';
 import { StyleSheet, View, Text, ScrollView } from 'react-native';
 import React, { useState } from 'react';
+import { getOrdersByUserId } from '@/services/orders_by_user_id';
 
 export default function TestRequests() {
-    const [products, setProducts] = useState<Product[] | null>(null); // Для хранения результата запроса
+    const [orders, setOrders] = useState<OrderByUser[] | null>([]); // Для хранения результата запроса
     const [error, setError] = useState<string | null>(null); // Для обработки ошибок
 
-    const fetchProducts = async () => {
+    const fetchOrders = async () => {
         try {
-            const data = await getProducts(); // Ожидаем выполнения функции
-            setProducts(data); // Сохраняем результат в состояние
+            const data = await getOrdersByUserId('1'); // Ожидаем выполнения функции
+            setOrders([data]); // Оборачиваем объект в массив
             setError(null); // Сбрасываем ошибку
         } catch (err) {
             setError((err as Error).message); // Устанавливаем сообщение об ошибке
-            setProducts(null); // Сбрасываем данные
+            setOrders([]); // Сбрасываем данные
         }
     };
+    
 
     return (
         <ScrollView>
@@ -26,15 +28,15 @@ export default function TestRequests() {
             <DefaultButton
                 title="Запрос"
                 iconUrl={require('../../assets/images/send-line.png')}
-                onPressFun={fetchProducts} // Вызываем функцию для получения данных
+                onPressFun={fetchOrders} // Вызываем функцию для получения данных
             />
             <Text style={styles.text}>
                 {(() => {
                     if (error) {
                         return `Ошибка: ${error}`; // Выводим ошибку, если она есть
                     } 
-                    else if (products) {
-                        return JSON.stringify(products, null, 2); // Выводим продукты в формате JSON
+                    else if (orders) {
+                        return JSON.stringify(orders, null, 2); // Выводим продукты в формате JSON
                     } 
                     else {
                         return 'Нажмите "Запрос" для получения данных'; // Текст по умолчанию

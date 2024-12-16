@@ -1,5 +1,7 @@
 import { StyleSheet, View, Text, FlatList } from 'react-native';
 import OrderIcon from './OrderIcon/OrderIcon';
+import { OrderItem } from '@/services/types';
+import { getRandomInt } from '@/utils/rng';
 
 
 type Product = {
@@ -11,8 +13,8 @@ type ItemProps = {
     id: string,
     status: string,
     deliveryDate: string,
-    orderPrice: Number,
-    products: Array<Product>;
+    orderPrice: string,
+    products: Array<OrderItem>;
 };
 
 export default function OrderCard({
@@ -33,9 +35,9 @@ export default function OrderCard({
                 <FlatList
                     contentContainerStyle={styles.imageContainer}
                     data={products}
-                    keyExtractor={item => item.id.toString()}
+                    keyExtractor={item => item.product.id.toString() + getRandomInt(1, 10000)}
                     renderItem={({ item }) =>
-                        <OrderIcon imageUrl={item.imageUrl} />}
+                        <OrderIcon imageUrl={item.product.image_url} />}
                     horizontal={true}
                 />
             </View>

@@ -2,7 +2,7 @@ import { StyleSheet, View, Image, Text, Pressable } from 'react-native';
 
 
 
-type ItemProps = { imageUrl: string };
+type ItemProps = { imageUrl: string | undefined };
 
 export default function OrderIcon({ imageUrl }: ItemProps) {
     return (
