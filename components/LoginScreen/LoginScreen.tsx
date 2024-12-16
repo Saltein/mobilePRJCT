@@ -5,6 +5,7 @@ import DefaultSeparator from '../ProfilePage/defaultSeparator';
 import RegistrationScreen from './RegistrationScreen';
 import { getUserByEmail } from '../../services/get_user_by_email';
 import { checkPassword } from '@/services/check_password';
+import { updateGlobalId } from '@/utils/login/write_login_file';
 
 interface LoginScreenProps {
   onLogin: () => void; // Пропс для обновления состояния входа
@@ -27,11 +28,11 @@ export default function LoginScreen({ onLogin }: LoginScreenProps) {
 
     if (!email) {
       Alert.alert('Ошибка', 'Пожалуйста, заполните все поля');
-      return; 
+      return;
     }
     try {
       const data = await getUserByEmail(email);
-      
+
       if (!data) {
         console.log('data:', data);
       }
@@ -48,7 +49,7 @@ export default function LoginScreen({ onLogin }: LoginScreenProps) {
 
     if (!password) {
       Alert.alert('Ошибка', 'Пожалуйста, заполните все поля');
-      return; 
+      return;
     }
     try {
       const data = await checkPassword(email, password);
@@ -56,8 +57,11 @@ export default function LoginScreen({ onLogin }: LoginScreenProps) {
       if (!data) {
         console.log('data:', data);
       }
-      if (data.message === 'Login_successful'){
+      if (data.message === 'Login_successful') {
         console.log('aboba__________________data:', data);
+        console.log('data:', data);
+        updateGlobalId(data.id)
+        console.log('data.email', data.email)
         onLogin()
       }
     } catch (error) {
@@ -91,7 +95,7 @@ export default function LoginScreen({ onLogin }: LoginScreenProps) {
           <View style={styles.modalWindow}>
             <Text style={styles.title}>Введите пароль</Text>
             <TextInput
-              style={styles.input}
+              style={styles.inputPass}
               placeholder="Пароль"
               value={password}
               onChangeText={setPasswordModal}
@@ -150,7 +154,14 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     padding: 12,
     marginBottom: 16,
-    width: '100%',
+  },
+  inputPass: {
+    borderWidth: 1,
+    borderColor: '#ccc',
+    borderRadius: 8,
+    padding: 12,
+    marginBottom: 16,
+    width: 200,
   },
   regButton: {
     alignItems: 'center',

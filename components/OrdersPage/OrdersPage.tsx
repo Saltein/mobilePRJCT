@@ -3,19 +3,19 @@ import { StyleSheet, FlatList, View, Text, ActivityIndicator } from 'react-nativ
 import React, { useState, useEffect } from 'react';
 import { getOrdersByUserId } from '@/services/orders_by_user_id';
 import { OrderByUser } from '@/services/types';
-import { getRandomInt } from '../../utils/rng';
 import { formatDateTime } from '@/utils/formatDateTime';
+import { getGlobalId } from '@/utils/login/write_login_file';
 
 export default function TabOneScreen() {
-    const userId = '1';
-
+    const [userId, setUserId] = useState<string | null>(null);
     const [orders, setOrders] = useState<OrderByUser[] | null>(null); // Для хранения результата запроса
     const [error, setError] = useState<string | null>(null); // Для обработки ошибок
     const [loading, setLoading] = useState<boolean>(true); // Состояние загрузки
 
-    const fetchOrders = async () => {
+    const fetchOrders = async (id: string) => {
+        setLoading(true); // Показываем индикатор загрузки
         try {
-            const data = await getOrdersByUserId(userId); // Ожидаем выполнения функции
+            const data = await getOrdersByUserId(id); // Ожидаем выполнения функции
             setOrders(data.orderData); // Сохраняем массив заказов
             setError(null); // Сбрасываем ошибку
         } catch (err) {
@@ -26,10 +26,16 @@ export default function TabOneScreen() {
         }
     };
 
-    // Загружаем данные при монтировании компонента
     useEffect(() => {
-        fetchOrders();
+        const globalId = getGlobalId();
+        setUserId(globalId ? String(globalId.id) : null);
+        console.log("abobas id:", getGlobalId())
     }, []);
+    useEffect(() => {
+        if (userId) {
+            fetchOrders(userId);
+        }
+    }, [userId]);
 
     const renderContent = () => {
         if (loading) {
@@ -52,7 +58,7 @@ export default function TabOneScreen() {
             <FlatList
                 contentContainerStyle={styles.container}
                 data={orders}
-                keyExtractor={item => item.id.toString() + getRandomInt(1, 10000)}
+                keyExtractor={item => item.id.toString()}
                 renderItem={({ item }) => (
                     <OrderCard
                         id={String(item.id)}
@@ -74,7 +80,7 @@ const styles = StyleSheet.create({
     container: {
         height: 'auto',
         padding: 16,
-        backgroundColor: '#f5f2f0'
+        backgroundColor: '#f5f2f0',
     },
     error: {
         color: 'red',
