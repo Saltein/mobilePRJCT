@@ -3,6 +3,8 @@ import DefaultButton from '../ProfilePage/defaultBtn';
 import React, { useState } from "react";
 import * as ImagePicker from 'expo-image-picker';
 import DefaultSeparator from '../ProfilePage/defaultSeparator';
+import { updateAddress } from '@/services/updateAddress';
+import { getGlobalId } from '@/utils/login/write_login_file';
 
 export default function SettingsPage() {
     const [modalVisible, setModalVisible] = useState(false);
@@ -36,6 +38,28 @@ export default function SettingsPage() {
         if (!result.canceled) {
             setProfileImage(result.assets[0].uri); // Установка нового изображения
         }
+    };
+
+    const [street, setStreet] = useState("");
+    const [entrance, setEntrance] = useState("");
+    const [floor, setFloor] = useState("");
+
+    const handleUpdateAddress = () => {
+        const user_id = getGlobalId() || { id: 0 };
+        const fullAddress = `${street}, подъезд ${entrance}, этаж ${floor}`;
+
+        setAddressModalVisible(false);
+
+        updateAddress(Number(user_id.id), fullAddress)
+            .then(() => {
+                alert("Адрес успешно обновлен!");
+                setStreet("");
+                setEntrance("");
+                setFloor("");
+            })
+            .catch((error) => {
+                alert("Ошибка при обновлении адреса: " + error.message);
+            });
     };
 
     return (
@@ -102,20 +126,26 @@ export default function SettingsPage() {
                         <TextInput
                             style={styles.input}
                             placeholder="Улица, дом, квартира"
+                            value={street}
+                            onChangeText={setStreet}
                         />
                         <TextInput
                             style={styles.input}
                             placeholder="Подъезд"
+                            value={entrance}
+                            onChangeText={setEntrance}
                         />
                         <TextInput
                             style={styles.input}
                             placeholder="Этаж"
+                            value={floor}
+                            onChangeText={setFloor}
                         />
                         <View style={styles.buttonContainer}>
                             <DefaultButton
                                 title='Сохранить'
                                 iconUrl={require('../../assets/images/check.png')}
-                                onPressFun={() => setAddressModalVisible(false)}
+                                onPressFun={handleUpdateAddress}
                             />
                             <DefaultButton
                                 title='Отменить'
@@ -163,8 +193,8 @@ export default function SettingsPage() {
                 </View>
             </Modal>
 
-            <DefaultSeparator/>
-            
+            <DefaultSeparator />
+
             <DefaultButton
                 title="Выход"
                 iconUrl={require('../../assets/images/door-exit-line.png')}
@@ -185,7 +215,7 @@ export default function SettingsPage() {
                                 iconUrl={require('../../assets/images/check.png')}
                                 onPressFun={() => {
                                     setExitModalVisible(false)
-                                    
+
                                 }}
                             />
                             <DefaultButton

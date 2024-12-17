@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import DefaultButton from '@/components/ProfilePage/defaultBtn';
 import DefaultSeparator from '@/components/ProfilePage/defaultSeparator';
 import { StyleSheet, View, Image, Text, Pressable } from 'react-native';
@@ -7,6 +7,8 @@ import { useNavigation } from '@react-navigation/native';
 import { createStackNavigator, StackNavigationProp } from '@react-navigation/stack';
 import OrdersPage from '../../components/OrdersPage/OrdersPage';
 import SettingsPage from '@/components/SettingsPage/SettingsPage';
+import { getGlobalId } from '@/utils/login/write_login_file';
+import { getUserById } from '@/services/get_user_by_id';
 
 // Создаём типы для маршрутов
 type RootStackParamList = {
@@ -25,6 +27,7 @@ const Stack = createStackNavigator<RootStackParamList>();
 
 function ProfilePageScreen() {
   const navigation = useNavigation<ProfilePageScreenNavigationProp>();
+  const [userName, setUserName] = useState("Загрузка...");
 
   const handleOrdersPage = () => {
     navigation.navigate('OrdersPage');
@@ -33,6 +36,21 @@ function ProfilePageScreen() {
   const handleSettingsPage = () => {
     navigation.navigate('SettingsPage');
   };
+
+  useEffect(() => {
+    async function fetchUserName() {
+      try {
+        const id = getGlobalId() || { id: 0 }; // Получаем ID
+        const user = await getUserById(id.id); // Ждем результат
+        setUserName(user?.name || "Неизвестный пользователь"); // Устанавливаем имя
+      } catch (error) {
+        console.error("Ошибка при получении пользователя:", error);
+        setUserName("Ошибка загрузки");
+      }
+    }
+
+    fetchUserName();
+  }, []); // Пустой массив зависимостей запускает эффект только один раз
 
   return (
     <View style={styles.container}>
@@ -44,7 +62,7 @@ function ProfilePageScreen() {
           }}
         />
         <View style={styles.profileText}>
-          <Text style={styles.profileName}>Абобка Абовыч</Text>
+          <Text style={styles.profileName}>{userName}</Text>
           <Pressable
             style={styles.settingsBtn}
             onPress={handleSettingsPage}

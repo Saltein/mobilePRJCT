@@ -7,6 +7,7 @@ import { getCartByUserId } from '@/services/get_cart_by_user_id';
 import CartCard from '@/components/CartPage/CartCard/CartCard';
 import DefaultButton from '@/components/ProfilePage/defaultBtn';
 import { Pressable } from 'react-native-gesture-handler';
+import { orderFormation } from '@/services/orderFormation';
 
 export default function CartPage() {
     const [cart, setCart] = useState<Product[] | null>(null); // Список товаров в корзине
@@ -39,6 +40,16 @@ export default function CartPage() {
             fetchProducts();
         }, [])
     );
+
+    const handlePurchaseButton = async () => {
+        try {
+            const globalId = getGlobalId() || { id: 0 };
+            await orderFormation(Number(globalId.id)); // Ждем завершения формирования заказа
+            await fetchProducts(); // Обновляем корзину после формирования заказа
+        } catch (err) {
+            console.error("Ошибка при оформлении заказа:", err);
+        }
+    };
 
     const renderContent = () => {
         if (loading) {
@@ -76,7 +87,7 @@ export default function CartPage() {
                     <DefaultButton
                         title='Купить'
                         iconUrl={require('../../assets/images/check.png')}
-                        onPressFun={() => { }}
+                        onPressFun={ handlePurchaseButton }
                     />
                 </View>
             </View>
