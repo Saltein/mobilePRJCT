@@ -111,7 +111,7 @@ const styles = StyleSheet.create({
     input: {
         borderWidth: 1,
         borderColor: '#ccc',
-        borderRadius: 8,
+        borderRadius: 12,
         padding: 12,
     },
     regButton: {

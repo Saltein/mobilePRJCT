@@ -1,17 +1,9 @@
-import { StyleSheet, View, Image, Text, Pressable, GestureResponderEvent } from 'react-native';
+import { StyleSheet, View, Image, Text, Pressable } from 'react-native';
 
 
+type ItemProps = { title: string, imageUrl: string, price: string, weight?: string | number; };
 
-type ItemProps = {
-    title: string, 
-    imageUrl: string, 
-    price: string, 
-    weight?: string | number, 
-    buttonTitle: string,
-    onPressFun: (event: GestureResponderEvent) => void
-};
-
-export default function StuffCard({title, imageUrl, price, weight}: ItemProps) {
+export default function CartCart({ title, imageUrl, price, weight }: ItemProps) {
     return (
         <View style={styles.container}>
             <Image
@@ -19,34 +11,46 @@ export default function StuffCard({title, imageUrl, price, weight}: ItemProps) {
                 source={{ uri: imageUrl }}
             />
             <View style={styles.labelContainer}>
-                <Text style={styles.price}>{price} ₽</Text>
-                <Text numberOfLines={1} style={styles.label}>{title}</Text>
+                <View style={styles.labelPrice}>
+
+                    <Text numberOfLines={1} style={styles.label}>{title}</Text>
+
+                    <Text style={styles.price}>{price} ₽</Text>
+
+                </View>
                 <Text style={styles.weight}>
                     {weight === 'null' ? ' ' : `${String(weight)} г`}
                 </Text>
             </View>
-            <Pressable style={styles.btn}>
+            {/* <Pressable style={styles.btn}>
                 <Text style={styles.btnLabel}>В корзину</Text>
-            </Pressable>
+            </Pressable> */}
         </View>
-    );
+    )
 }
 
+
 const styles = StyleSheet.create({
+    labelPrice: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        width: '83%',
+    },
     container: {
-        height: 230,
-        flexGrow: 1, // Позволяет элементу расширяться
         backgroundColor: "#fff",
+        elevation: 2,
+        shadowColor: '#171717',
+
+        paddingHorizontal: 8,
+        paddingVertical: 8,
         borderRadius: 12,
-        marginLeft: 16,
-        marginVertical: 8,
-        maxWidth: 130,
-        minWidth: 70,
-        elevation: 4,
+        marginBottom: 8,
+        flexDirection: 'row',
+        height: 120,
     },
 
     image: {
-        height: '55%',
+        width: '30%',
         borderRadius: 12,
         elevation: 2,
         shadowColor: '#171717',
@@ -60,8 +64,7 @@ const styles = StyleSheet.create({
 
     label: {
         fontWeight: 500,
-        fontSize: 11,
-        color: "#444",
+        fontSize: 18,
         maxWidth: '85%',
     },
 

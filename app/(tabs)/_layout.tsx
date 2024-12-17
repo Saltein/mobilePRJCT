@@ -43,6 +43,13 @@ export default function TabLayout() {
         }}
       />
       <Tabs.Screen
+        name="CartPage"
+        options={{
+          title: 'Корзина',
+          tabBarIcon: ({ color }) => <TabBarIcon name="cart-plus" color={color} />,
+        }}
+      />
+      <Tabs.Screen
         name="ProfilePage"
         options={{
           headerShown: false,

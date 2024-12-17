@@ -7,6 +7,13 @@ export interface Product {
     stock: number;
     description?: string;
     product_weight?: number;
+    product: {
+        id: number;
+        name: string;
+        image_url: string;
+        price: number;
+        product_weight: number;
+    }
 }
 
 

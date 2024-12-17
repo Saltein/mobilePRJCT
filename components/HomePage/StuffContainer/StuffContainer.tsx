@@ -31,6 +31,10 @@ export default function StuffContainer({ fetchProducts }: { fetchProducts: () =>
     fetchData();  // Загружаем данные при монтировании компонента
   }, [fetchProducts]);  // Перезагружаем данные при изменении функции
 
+  const handleToCartButton = () => {
+    
+  }
+
   const renderContent = () => {
     if (loading) {
       return <ActivityIndicator size="large" color="#0000ff" />;
@@ -53,6 +57,8 @@ export default function StuffContainer({ fetchProducts }: { fetchProducts: () =>
             imageUrl={item.image_url || 'https://imgholder.ru/600x600/ccc/fff&text=Ой,+извините&font=matias'}
             price={String(item.price)}
             weight={String(item.product_weight)}
+            buttonTitle='aboba'
+            onPressFun={handleToCartButton}
           />
         )}
         keyExtractor={(item) => String(item.id)}
