@@ -6,6 +6,7 @@ import React, { useState } from 'react';
 import { getOrdersByUserId } from '@/services/orders_by_user_id';
 import { getUserByEmail } from '@/services/get_user_by_email';
 import { getProductsByCategory } from '@/services/get_products_by_category';
+import { getCategories } from '@/services/get_categories';
 
 export default function TestRequests() {
     const [orders, setOrders] = useState<User | null>(); // Для хранения результата запроса
@@ -13,7 +14,7 @@ export default function TestRequests() {
 
     const fetchOrders = async () => {
         try {
-            const data = await getProductsByCategory(1); // Ожидаем выполнения функции
+            const data = await getCategories(); // Ожидаем выполнения функции
             setOrders(data); // Оборачиваем объект в массив
             setError(null); // Сбрасываем ошибку
         } catch (err) {

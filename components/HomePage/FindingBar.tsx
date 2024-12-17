@@ -6,6 +6,7 @@ import StuffContainer from '@/components/HomePage/StuffContainer/StuffContainer'
 import DefaultSeparator from '@/components/ProfilePage/defaultSeparator';
 import { getProducts } from '@/services/products';
 import { getProductsByCategory } from '@/services/get_products_by_category';
+import { getCategories } from '../../services/get_categories'; // Импортируем функцию для получения категорий
 
 type ItemType = {
     id: string;
@@ -14,25 +15,37 @@ type ItemType = {
 };
 
 export default function FindingBar() {
-    const dataExample = [
-        { label: 'Овощи', value: 1 },
-        { label: 'Фрукты', value: 2 },
-        { label: 'Молочные продукты', value: 3 },
-    ];
-
     const [sortModalVisible, setSortModalVisible] = useState(false);
     const [selectedValue, setSelectedValue] = useState<string | null>(null);
-    const [fetchFunction, setFetchFunction] = useState(() => getProducts);  // Изначально передаем getProducts
+    const [fetchFunction, setFetchFunction] = useState(() => getProducts);
+    const [dataExample, setDataExample] = useState<ItemType[]>([]); // Состояние для списка категорий
+
+    useEffect(() => {
+        // Функция для загрузки категорий
+        const fetchCategories = async () => {
+            try {
+                const categories = await getCategories(); // Запрос к серверу
+                const formattedCategories = categories.map((category: { id: number; name: string }) => ({
+                    label: category.name,
+                    value: category.id,
+                }));
+                setDataExample(formattedCategories); // Устанавливаем преобразованный список
+            } catch (error) {
+                console.error('Ошибка загрузки категорий:', error);
+            }
+        };
+
+        fetchCategories();
+    }, []); // Пустой массив зависимостей для выполнения только при монтировании
 
     const handleSortButton = (categoryId: number) => {
-        setFetchFunction(() => () => getProductsByCategory(categoryId));  // При изменении категории передаем getProductsByCategory
-        setSortModalVisible(false)
+        setFetchFunction(() => () => getProductsByCategory(categoryId));
+        setSortModalVisible(false);
     };
 
-    // Функция для сброса выбора
     const resetSelection = () => {
-        setSelectedValue(null);  // Сбросить выбранную категорию
-        setFetchFunction(() => getProducts);  // Вернуть функцию получения всех товаров
+        setSelectedValue(null);
+        setFetchFunction(() => getProducts);
     };
 
     return (
@@ -40,7 +53,7 @@ export default function FindingBar() {
             <View style={styles.mainCon}>
                 <Pressable
                     style={styles.sortButton}
-                    onPress={() => { setSortModalVisible(true); }}
+                    onPress={() => setSortModalVisible(true)}
                 >
                     <Image
                         style={styles.image}
@@ -70,7 +83,7 @@ export default function FindingBar() {
                             <View style={styles.picker}>
                                 <RNPickerSelect
                                     onValueChange={(value) => {
-                                        console.log('value: ', value)
+                                        console.log('value: ', value);
                                         setSelectedValue(value);
                                         handleSortButton(value);
                                     }}
@@ -81,13 +94,13 @@ export default function FindingBar() {
                                         value: null,
                                         color: '#9EA0A4',
                                     }}
-                                    value={selectedValue}  // Устанавливаем выбранное значение
+                                    value={selectedValue}
                                 />
                             </View>
 
                             <View style={styles.buttonsContainer}>
                                 <DefaultButton
-                                    title='Сбросить'
+                                    title="Сбросить"
                                     iconUrl={require('../../assets/images/check.png')}
                                     onPressFun={() => {
                                         resetSelection();
@@ -105,20 +118,19 @@ export default function FindingBar() {
     );
 }
 
-
 const styles = StyleSheet.create({
     buttonsContainer: {
         flexDirection: 'column',
         justifyContent: 'center',
-        gap: '8',
+        gap: 8,
     },
     container: {
         marginBottom: 108,
     },
     labelModal: {
         fontSize: 18,
-        fontWeight: 700,
-        top: -20
+        fontWeight: '700',
+        top: -20,
     },
     picker: {
         width: 300,
@@ -126,23 +138,14 @@ const styles = StyleSheet.create({
         borderRadius: 12,
         elevation: 2,
     },
-    flatList: {
-        height: 150,
-    },
-    item: {
-        padding: 15,
-        borderBottomWidth: 1,
-        borderBottomColor: '#ddd',
-        height: 32,
-    },
     modal: {
         flex: 1,
-        justifyContent: "center",
-        alignItems: "center",
-        backgroundColor: "rgba(0, 0, 0, 0.5)",
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: 'rgba(0, 0, 0, 0.5)',
     },
     modalWindow: {
-        backgroundColor: "#f5f2f0",
+        backgroundColor: '#f5f2f0',
         paddingVertical: 48,
         paddingHorizontal: 16,
         borderRadius: 12,
@@ -164,12 +167,10 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         marginTop: 16,
         marginLeft: 16,
-        height: "auto",
-
+        height: 'auto',
         borderWidth: 1,
         borderColor: '#ccc',
         borderRadius: 12,
-
         backgroundColor: '#fff',
     },
     searchBar: {
@@ -178,14 +179,12 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         marginTop: 16,
         marginHorizontal: 16,
-        height: "auto",
-
+        height: 'auto',
         borderWidth: 1,
         borderColor: '#ccc',
         borderRadius: 12,
-        flexGrow: 1, // Позволяет элементу расширяться
-        flexShrink: 1, // Позволяет сжиматься при недостатке места
-
+        flexGrow: 1,
+        flexShrink: 1,
         backgroundColor: '#fff',
     },
     image: {
@@ -200,10 +199,9 @@ const styles = StyleSheet.create({
         borderRadius: 12,
         paddingHorizontal: 8,
         height: 48,
-        fontWeight: "500",
+        fontWeight: '500',
     },
 });
-
 
 const pickerSelectStyles = StyleSheet.create({
     inputAndroid: {
@@ -212,7 +210,6 @@ const pickerSelectStyles = StyleSheet.create({
         paddingVertical: 8,
         borderRadius: 12,
         color: 'black',
-        paddingRight: 30, // чтобы избежать перекрытия иконкой
-
+        paddingRight: 30,
     },
 });
