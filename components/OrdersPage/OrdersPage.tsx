@@ -51,7 +51,11 @@ export default function TabOneScreen() {
         }
 
         if (!orders || orders.length === 0) {
-            return <Text style={styles.empty}>Нет доступных товаров</Text>;
+            return (
+                <View style={styles.noOrders}>
+                    <Text style={styles.empty}>Вы еще не делали заказов</Text>
+                </View>
+            )
         }
 
         return (
@@ -90,4 +94,9 @@ const styles = StyleSheet.create({
         fontSize: 16,
         color: 'gray',
     },
+    noOrders: {
+        justifyContent: 'center',
+        alignItems: 'center',
+        padding: 32,
+    }
 });

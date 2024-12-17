@@ -55,7 +55,7 @@ const styles = StyleSheet.create({
         fontWeight: 500,
         fontSize: 11,
         color: "#444",
-        
+        maxWidth: '85%',
     },
 
     price: {

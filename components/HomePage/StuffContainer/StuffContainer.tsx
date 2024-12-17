@@ -5,33 +5,31 @@ import { getProducts } from '@/services/products';
 import { Product } from '@/services/types';
 
 
+type ItemProps = {};
 
-export default function StuffContainer() {
-
-  const [products, setProducts] = useState<Product[] | null>(null); // Для хранения результата запроса
-  const [error, setError] = useState<string | null>(null); // Для обработки ошибок
-  const [loading, setLoading] = useState<boolean>(true); // Состояние загрузки
+export default function StuffContainer({ fetchProducts }: { fetchProducts: () => Promise<Product[]> }) {
+  const [products, setProducts] = useState<Product[] | null>(null);
+  const [error, setError] = useState<string | null>(null);
+  const [loading, setLoading] = useState<boolean>(true);
 
   // Функция для получения данных
-  const fetchProducts = async () => {
-    setLoading(true); // Устанавливаем состояние загрузки
+  const fetchData = async () => {
+    setLoading(true);
     try {
-      const data = await getProducts(); // Получаем данные
-      setProducts(data); // Сохраняем данные
-      setError(null); // Сбрасываем ошибку
+      const data = await fetchProducts(); // Вызываем переданную функцию
+      setProducts(data);
+      setError(null);
     } catch (err) {
-      setError((err as Error).message); // Устанавливаем ошибку
-      setProducts(null); // Сбрасываем данные
+      setError((err as Error).message);
+      setProducts(null);
     } finally {
-      setLoading(false); // Завершаем загрузку
+      setLoading(false);
     }
   };
 
-  // Загружаем данные при монтировании компонента
   useEffect(() => {
-    fetchProducts();
-  }, []);
-
+    fetchData();  // Загружаем данные при монтировании компонента
+  }, [fetchProducts]);  // Перезагружаем данные при изменении функции
 
   const renderContent = () => {
     if (loading) {
@@ -52,7 +50,7 @@ export default function StuffContainer() {
         renderItem={({ item }) => (
           <StuffCard
             title={item.name}
-            imageUrl={item.image_url || 'https://imgholder.ru/600x600/ccc/fff&text=Ой,+извините&font=matias'} // Заглушка
+            imageUrl={item.image_url || 'https://imgholder.ru/600x600/ccc/fff&text=Ой,+извините&font=matias'}
             price={String(item.price)}
             weight={String(item.product_weight)}
           />
@@ -68,6 +66,7 @@ export default function StuffContainer() {
     <View>{renderContent()}</View>
   );
 }
+
 
 
 const styles = StyleSheet.create({
