@@ -3,6 +3,8 @@ import StuffCard from './StuffCard/StuffCard';
 import React, { useState, useEffect } from 'react';
 import { getProducts } from '@/services/products';
 import { Product } from '@/services/types';
+import { addProductToCartById } from '@/services/addToCart';
+import { getGlobalId } from '@/utils/login/write_login_file';
 
 
 type ItemProps = {};
@@ -31,9 +33,6 @@ export default function StuffContainer({ fetchProducts }: { fetchProducts: () =>
     fetchData();  // Загружаем данные при монтировании компонента
   }, [fetchProducts]);  // Перезагружаем данные при изменении функции
 
-  const handleToCartButton = () => {
-    
-  }
 
   const renderContent = () => {
     if (loading) {
@@ -58,7 +57,8 @@ export default function StuffContainer({ fetchProducts }: { fetchProducts: () =>
             price={String(item.price)}
             weight={String(item.product_weight)}
             buttonTitle='aboba'
-            onPressFun={handleToCartButton}
+            user_id={getGlobalId() || { id: 0 }}
+            product_id={item.id}
           />
         )}
         keyExtractor={(item) => String(item.id)}

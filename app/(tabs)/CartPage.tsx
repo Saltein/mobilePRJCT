@@ -1,10 +1,12 @@
-import { StyleSheet, FlatList, View, Text, ActivityIndicator } from 'react-native';
-import React, { useState, useEffect } from 'react';
+import { StyleSheet, FlatList, View, Text, ActivityIndicator, Image } from 'react-native';
+import React, { useState, useCallback } from 'react';
+import { useFocusEffect } from '@react-navigation/native'; // Импорт useFocusEffect
 import { Product } from '@/services/types';
 import { getGlobalId } from '@/utils/login/write_login_file';
 import { getCartByUserId } from '@/services/get_cart_by_user_id';
 import CartCard from '@/components/CartPage/CartCard/CartCard';
 import DefaultButton from '@/components/ProfilePage/defaultBtn';
+import { Pressable } from 'react-native-gesture-handler';
 
 export default function CartPage() {
     const [cart, setCart] = useState<Product[] | null>(null); // Список товаров в корзине
@@ -21,7 +23,7 @@ export default function CartPage() {
 
             const data = await getCartByUserId(userId);
             setCart(data.cartData || []);
-            console.log('data.cartData', data.cartData)
+            console.log('data.cartData', data.cartData);
             setError(null);
         } catch (err) {
             setError((err as Error).message);
@@ -31,9 +33,12 @@ export default function CartPage() {
         }
     };
 
-    useEffect(() => {
-        fetchProducts(); // Загружаем данные при монтировании компонента
-    }, []);
+    // Загружаем данные при открытии вкладки
+    useFocusEffect(
+        useCallback(() => {
+            fetchProducts();
+        }, [])
+    );
 
     const renderContent = () => {
         if (loading) {
@@ -58,6 +63,9 @@ export default function CartPage() {
                             imageUrl={item.product.image_url || 'https://imgholder.ru/600x600/ccc/fff&text=Ой,+извините&font=matias'}
                             price={String(item.product.price)}
                             weight={String(item.product.product_weight)}
+                            user_id={getGlobalId() || { id: 0 }}
+                            product_id={item.product.id}
+                            onItemDeleted={fetchProducts} // Передаем функцию
                         />
                     )}
                     keyExtractor={(item) => String(item.id)}
@@ -68,7 +76,7 @@ export default function CartPage() {
                     <DefaultButton
                         title='Купить'
                         iconUrl={require('../../assets/images/check.png')}
-                        onPressFun={() => {}}
+                        onPressFun={() => { }}
                     />
                 </View>
             </View>
@@ -80,7 +88,14 @@ export default function CartPage() {
 
 const styles = StyleSheet.create({
     buttonCon: {
-        padding: 16,
+        position: 'absolute', // Абсолютное позиционирование
+        bottom: 0, // Расположение внизу
+        left: 0, // Отступ слева
+        right: 0, // Отступ справа
+        padding: 8,
+        backgroundColor: 'rgba(255, 255, 255, 0)', // Прозрачный фон
+        borderRadius: 8, // Скругление углов
+        zIndex: 10, // Поверх всех элементов
     },
     globalCon: {
         justifyContent: 'space-between',

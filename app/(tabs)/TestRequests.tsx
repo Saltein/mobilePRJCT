@@ -8,6 +8,7 @@ import { getUserByEmail } from '@/services/get_user_by_email';
 import { getProductsByCategory } from '@/services/get_products_by_category';
 import { getCategories } from '@/services/get_categories';
 import { getCartByUserId } from '@/services/get_cart_by_user_id';
+import { deleteFromCartById } from '@/services/deleteFromCartById';
 
 export default function TestRequests() {
     const [orders, setOrders] = useState<User | null>(); // Для хранения результата запроса
@@ -15,7 +16,7 @@ export default function TestRequests() {
 
     const fetchOrders = async () => {
         try {
-            const data = await getCartByUserId(1); // Ожидаем выполнения функции
+            const data = await deleteFromCartById(1, 235); // Ожидаем выполнения функции
             setOrders(data); // Оборачиваем объект в массив
             setError(null); // Сбрасываем ошибку
         } catch (err) {
