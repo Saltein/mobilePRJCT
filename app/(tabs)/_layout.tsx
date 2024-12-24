@@ -46,7 +46,7 @@ export default function TabLayout() {
         name="CartPage"
         options={{
           title: 'Корзина',
-          tabBarIcon: ({ color }) => <TabBarIcon name="cart-plus" color={color} />,
+          tabBarIcon: ({ color }) => <TabBarIcon name="shopping-cart" color={color} />,
         }}
       />
       <Tabs.Screen
@@ -62,6 +62,13 @@ export default function TabLayout() {
         options={{
           title: 'TestRequests',
           tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
+        }}
+      />
+      <Tabs.Screen
+        name="StatisticsPage"
+        options={{
+          title: 'Статистика',
+          tabBarIcon: ({ color }) => <TabBarIcon name="bar-chart" color={color} />,
         }}
       />
     </Tabs>

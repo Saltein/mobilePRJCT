@@ -1,17 +1,10 @@
 import DefaultButton from '@/components/ProfilePage/defaultBtn';
-import { getProducts } from '@/services/products';
-import { OrderByUser, Product, User } from '@/services/types';
+import { User } from '@/services/types';
 import { StyleSheet, View, Text, ScrollView } from 'react-native';
 import React, { useState } from 'react';
-import { getOrdersByUserId } from '@/services/orders_by_user_id';
-import { getUserByEmail } from '@/services/get_user_by_email';
-import { getProductsByCategory } from '@/services/get_products_by_category';
-import { getCategories } from '@/services/get_categories';
-import { getCartByUserId } from '@/services/get_cart_by_user_id';
-import { deleteFromCartById } from '@/services/deleteFromCartById';
-import { orderFormation } from '@/services/orderFormation';
-import { updateAddress } from '@/services/updateAddress';
+
 import { getUserById } from '@/services/get_user_by_id';
+import { getPopularProducts } from '@/services/getPopularProducts';
 
 export default function TestRequests() {
     const [orders, setOrders] = useState<User | null>(); // Для хранения результата запроса
@@ -20,7 +13,7 @@ export default function TestRequests() {
     const adres = 'assress'
     const fetchOrders = async () => {
         try {
-            const data = await getUserById(7); // Ожидаем выполнения функции
+            const data = await getPopularProducts(); // Ожидаем выполнения функции
             // setOrders(data); // Оборачиваем объект в массив
             setError(null); // Сбрасываем ошибку
         } catch (err) {
